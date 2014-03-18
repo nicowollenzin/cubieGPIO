@@ -1,0 +1,12 @@
+cd /sys/class/gpio
+
+
+echo 32 > unexport
+echo 28 > unexport
+echo 39 > unexport
+echo 51 > unexport
+echo 31 > unexport
+echo 43 > unexport
+echo 40 > unexport
+echo 36 > unexport
+

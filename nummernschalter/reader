@@ -1,0 +1,46 @@
+#!/bin/bash
+
+GPIO_PATH='/sys/class/gpio'
+
+#
+#reset state
+#
+
+echo 32 > ${GPIO_PATH}/unexport
+echo 31 > ${GPIO_PATH}/unexport
+
+#
+#init
+#
+echo 32 > $GPIO_PATH/export
+echo 31 > $GPIO_PATH/export
+echo in > $GPIO_PATH/gpio32_pd0/direction
+echo in > $GPIO_PATH/gpio31_pd1/direction
+
+echo "init done"
+while true;
+do
+   WAHL=$(cat /sys/class/gpio/gpio31_pd1/value)
+   i=0
+   while [ $WAHL -eq 1 ]
+   do
+     TEMP=0
+     for j in 1 2 3 4 6 7 8 9 10
+     do
+       IMPULS=$(cat /sys/class/gpio/gpio32_pd0/value)
+#       echo "got impuls"
+       TEMP=$(( $TEMP + $IMPULS ))
+       sleep 0.01
+     done
+     if [ $TEMP -gt 0 ] 
+     then
+       echo "added one"
+       i=$(( $i + 1 ))
+     fi
+     WAHL=$(cat /sys/class/gpio/gpio31_pd1/value)
+     if [ $WAHL -eq 0 ]
+     then
+       echo $i
+     fi
+   done
+done
