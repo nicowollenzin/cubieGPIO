@@ -25,12 +25,11 @@ do
    while [ $WAHL -eq 1 ]
    do
      TEMP=0
-     for j in 1 2 3 4 6 7 8 9 10
+     IMPULS=$(cat /sys/class/gpio/gpio32_pd0/value)
+     while [ $IMPULS -eq 1 ]
      do
-       IMPULS=$(cat /sys/class/gpio/gpio32_pd0/value)
-#       echo "got impuls"
        TEMP=$(( $TEMP + $IMPULS ))
-       sleep 0.01
+       IMPULS=$(cat /sys/class/gpio/gpio32_pd0/value)
      done
      if [ $TEMP -gt 0 ] 
      then
